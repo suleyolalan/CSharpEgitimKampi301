@@ -30,17 +30,18 @@
           <Property Name="GuideName" Type="nvarchar" MaxLength="50" />
           <Property Name="GuideSurname" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'EgitimKampiEfTravelDb.dbo.Location' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="Location">
-          <Property Name="LocationId" Type="int" />
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="Country" Type="nvarchar" MaxLength="50" />
           <Property Name="Capacity" Type="tinyint" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="DayNight" Type="nvarchar" MaxLength="50" />
           <Property Name="GuideId" Type="int" />
-        </EntityType>-->
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -51,19 +52,41 @@ warning 6013: The table/view 'EgitimKampiEfTravelDb.dbo.Location' does not have 
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-error 6004: The table 'EgitimKampiEfTravelDb.dbo.Location' is referenced by a relationship, but cannot be found.
-        <Association Name="FK_Location_Guide" />-->
+        <Association Name="FK_Location_Guide">
+          <End Role="Guide" Type="Self.Guide" Multiplicity="0..1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guide">
+              <PropertyRef Name="GuideId" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="GuideId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="EgitimKampiEfTravelDbModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Guide" EntityType="Self.Guide" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Location_Guide" Association="Self.FK_Location_Guide">
+            <End Role="Guide" EntitySet="Guide" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EgitimKampiEfTravelDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="CustomerId" />
@@ -118,6 +141,7 @@ error 6004: The table 'EgitimKampiEfTravelDb.dbo.Location' is referenced by a re
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EgitimKampiEfTravelDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admin" EntityType="Self.Admin" />
           <EntitySet Name="Customer" EntityType="Self.Customer" />
           <EntitySet Name="Guide" EntityType="Self.Guide" />
           <EntitySet Name="Location" EntityType="Self.Location" />
@@ -126,29 +150,29 @@ error 6004: The table 'EgitimKampiEfTravelDb.dbo.Location' is referenced by a re
             <End Role="Guide" EntitySet="Guide" />
             <End Role="Location" EntitySet="Location" />
           </AssociationSet>
-          <EntitySet Name="Admin" EntityType="EgitimKampiEfTravelDbModel.Admin" />
         </EntityContainer>
-        <EntityType Name="Admin">
-          <Key>
-            <PropertyRef Name="AdminId" />
-          </Key>
-          <Property Name="AdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EgitimKampiEfTravelDbModelStoreContainer" CdmEntityContainer="EgitimKampiEfTravelDbEntities">
+          <EntitySetMapping Name="Admin">
+            <EntityTypeMapping TypeName="EgitimKampiEfTravelDbModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Customer">
             <EntityTypeMapping TypeName="EgitimKampiEfTravelDbModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
-                <ScalarProperty Name="CustomerBalance" ColumnName="CustomerBalance" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="CustomerSurname" ColumnName="CustomerSurname" />
+                <ScalarProperty Name="CustomerBalance" ColumnName="CustomerBalance" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -161,6 +185,19 @@ error 6004: The table 'EgitimKampiEfTravelDb.dbo.Location' is referenced by a re
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Location">
+            <EntityTypeMapping TypeName="EgitimKampiEfTravelDbModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DayNight" ColumnName="DayNight" />
+                <ScalarProperty Name="GuideId" ColumnName="GuideId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="EgitimKampiEfTravelDbModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -169,15 +206,6 @@ error 6004: The table 'EgitimKampiEfTravelDb.dbo.Location' is referenced by a re
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Admin">
-            <EntityTypeMapping TypeName="EgitimKampiEfTravelDbModel.Admin">
-              <MappingFragment StoreEntitySet="Admin">
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

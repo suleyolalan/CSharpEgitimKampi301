@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSharpEgitimKampi301.EFProject
+namespace CSharpEgitimKampi301EFProject
 {
     using System;
     using System.Collections.Generic;

@@ -7,21 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSharpEgitimKampi301.EFProject
+namespace CSharpEgitimKampi301EFProject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Location
+    public partial class sysdiagrams
     {
-        public int LocationId { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public Nullable<byte> Capacity { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public string DayNight { get; set; }
-        public Nullable<int> GuideId { get; set; }
-    
-        public virtual Guide Guide { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

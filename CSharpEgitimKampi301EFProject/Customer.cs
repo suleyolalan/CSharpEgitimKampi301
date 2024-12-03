@@ -7,21 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSharpEgitimKampi301.EFProject
+namespace CSharpEgitimKampi301EFProject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Location
+    public partial class Customer
     {
-        public int LocationId { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public Nullable<byte> Capacity { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public string DayNight { get; set; }
-        public Nullable<int> GuideId { get; set; }
-    
-        public virtual Guide Guide { get; set; }
+        public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerSurname { get; set; }
+        public Nullable<decimal> CustomerBalance { get; set; }
     }
 }
