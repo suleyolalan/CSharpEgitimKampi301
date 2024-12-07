@@ -10,7 +10,7 @@ namespace CSharpEgitimKampi301.DataAccessLayer.Abstract
     {
         void Insert(T entity); // T türünde bir entity parametresii alıyoruz
         void Update(T entity); // T değeri sıraısyla customer,category,order,product entitylerini alsın
-        void Delete(int id); // Delete için dışarıdan id gönderiyoruz ve bu İd'ye göre işlem yapacağız
+        void Delete(T entity); // Delete için dışarıdan id gönderiyoruz ve bu İd'ye göre işlem yapacağız
         List<T> GetAll(); // Bütün verileri getirecek olan GetAll metodu tanımladık
         T GetById(int id); // T türünde GetById isminde dışarıdan int id parametresi alan bir mett oluşturduk
 
